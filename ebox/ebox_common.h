@@ -114,11 +114,11 @@ public:
         return read();
     }
     PIN_ID_t pin_id;
+    GPIO_TypeDef *port;
+    uint16_t pin;
 private:
     void af_config(uint8_t af_configration);
 
-    GPIO_TypeDef *port;
-    uint16_t pin;
     
     uint32_t port_set_reg;
     uint32_t port_reset_reg;
