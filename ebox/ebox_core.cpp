@@ -13,7 +13,7 @@ extern "C" {
         get_system_clock(&system_clock);
         SysTick_Config(system_clock.core/1000);//  每隔 (nhz/168,000,000)s产生一次中断
         NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
-
+			  ADC1_init();
     }
     uint64_t micros(void)
     {

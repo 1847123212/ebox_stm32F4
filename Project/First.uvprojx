@@ -647,6 +647,16 @@
               <FileType>8</FileType>
               <FilePath>..\ebox\ebox_iflash.cpp</FilePath>
             </File>
+            <File>
+              <FileName>ebox_adc.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\ebox\ebox_adc.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>ebox_dac.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\ebox\ebox_dac.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
