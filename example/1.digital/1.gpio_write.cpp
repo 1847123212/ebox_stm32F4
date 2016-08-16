@@ -12,25 +12,21 @@
  */
 
 
-
 #include "ebox.h"
 void setup()
 {
     ebox_init();
-    uart1.begin(9600);
+    PB8.mode(OUTPUT_PP);
 }
 int main(void)
 {
     setup();
     while(1)
     {
-        uart1.printf("random=%d\r\n", random());
-        uart1.printf("random=%d\r\n", random(100));
-        uart1.printf("random=%d\r\n", random(100, 65535));
-        delay_ms(1000);
+        PB8.set();
+        PB8.reset();
     }
+
 }
-
-
 
 

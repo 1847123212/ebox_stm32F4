@@ -14,23 +14,31 @@
 
 
 #include "ebox.h"
+#include "math.h"
+
+
 void setup()
 {
     ebox_init();
-    uart1.begin(9600);
+
 }
+
+float x;
+uint16_t y;
 int main(void)
 {
+
     setup();
+
     while(1)
     {
-        uart1.printf("random=%d\r\n", random());
-        uart1.printf("random=%d\r\n", random(100));
-        uart1.printf("random=%d\r\n", random(100, 65535));
-        delay_ms(1000);
+        x = x + PI * 0.01;
+        if(x >= PI)x = 0;
+        y = 2000 - (sin(x) + 1) * 1000;
+
+        analog_write(&PB8, y);
+        delay_ms(10);
     }
+
+
 }
-
-
-
-

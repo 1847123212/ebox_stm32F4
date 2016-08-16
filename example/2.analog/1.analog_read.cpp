@@ -14,19 +14,24 @@
 
 
 #include "ebox.h"
+int16_t x;
 void setup()
 {
     ebox_init();
     uart1.begin(9600);
+    PB1.mode(AIN);
 }
+
 int main(void)
 {
     setup();
     while(1)
     {
-        uart1.printf("random=%d\r\n", random());
-        uart1.printf("random=%d\r\n", random(100));
-        uart1.printf("random=%d\r\n", random(100, 65535));
+        x = analog_read(&PB1);
+        uart1.printf("hex = %05d\r\n", x);
+        x = analog_read_voltage(&PB1);
+        uart1.printf("val = %04dmv\r\n", x);
+        uart1.printf("==============\r\n", x);
         delay_ms(1000);
     }
 }
