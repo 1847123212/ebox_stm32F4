@@ -7,7 +7,7 @@ uint16_t t4_overflow_times = 0;
 
 
 extern "C" {
-    void TIM1_UP_IRQHandler(void)
+    void TIM1_UP_TIM10_IRQHandler(void)
     {
 
         if(TIM_GetITStatus(TIM1 , TIM_IT_Update) == SET)

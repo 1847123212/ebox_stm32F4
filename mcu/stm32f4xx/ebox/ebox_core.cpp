@@ -3,15 +3,14 @@
 
 extern "C" {
 #include "ebox_core.h"
-
-    system_clock_t system_clock;
+    cpu_t cpu;
     __IO uint64_t millis_seconds;//提供一个mills()等效的全局变量。降低cpu调用开销
-     static void get_system_clock(system_clock_t *clock);
+     static void get_system_clock(cpu_clock_t *clock);
    
     void ebox_init(void)
     {
-        get_system_clock(&system_clock);
-        SysTick_Config(system_clock.core/1000);//  每隔 (nhz/168,000,000)s产生一次中断
+        get_system_clock(&cpu.clock);
+        SysTick_Config(cpu.clock.core/1000);//  每隔 (nhz/168,000,000)s产生一次中断
         NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
 			  ADC1_init();
     }
@@ -69,7 +68,7 @@ extern "C" {
     }
 
     
-    static void get_system_clock(system_clock_t *clock)
+    static void get_system_clock(cpu_clock_t *clock)
     {
         __I uint8_t AHBPrescTable[16] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 6, 7, 8, 9};
         uint32_t tmp = 0, pllp = 2, pllsource = 0, pllm = 2;

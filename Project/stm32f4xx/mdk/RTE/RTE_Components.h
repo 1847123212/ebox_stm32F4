@@ -3,7 +3,7 @@
  * Auto generated Run-Time-Environment Component Configuration File
  *      *** Do not modify ! ***
  *
- * Project: 'First' 
+ * Project: 'stm32f4xx' 
  * Target:  'STM32F4' 
  */
 

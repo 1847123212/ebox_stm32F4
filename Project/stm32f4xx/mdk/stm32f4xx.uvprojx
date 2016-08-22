@@ -48,7 +48,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\Output\</OutputDirectory>
-          <OutputName>First</OutputName>
+          <OutputName>ebox_stm32f4xx</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>0</CreateHexFile>
@@ -133,10 +133,10 @@
             <RunIndependent>0</RunIndependent>
             <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
             <Capability>1</Capability>
-            <DriverSelection>4099</DriverSelection>
+            <DriverSelection>4096</DriverSelection>
           </Flash1>
-          <bUseTDR>0</bUseTDR>
-          <Flash2>Segger\JL2CM3.dll</Flash2>
+          <bUseTDR>1</bUseTDR>
+          <Flash2>BIN\UL2CM3.DLL</Flash2>
           <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
@@ -647,6 +647,11 @@
               <FileType>8</FileType>
               <FilePath>..\..\..\mcu\stm32f4xx\ebox\ebox_time.cpp</FilePath>
             </File>
+            <File>
+              <FileName>ebox_pwm.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\mcu\stm32f4xx\ebox\ebox_pwm.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -656,11 +661,6 @@
               <FileName>fsmc_sram.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\Driver\fsmc_sram.c</FilePath>
-            </File>
-            <File>
-              <FileName>led.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\Driver\led.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -687,6 +687,11 @@
               <FileType>8</FileType>
               <FilePath>..\..\..\common\edriver\parallel_gpio.cpp</FilePath>
             </File>
+            <File>
+              <FileName>led.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\common\edriver\led.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -696,6 +701,11 @@
               <FileName>main.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\..\..\User\main.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>bsp.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\User\bsp.cpp</FilePath>
             </File>
           </Files>
         </Group>

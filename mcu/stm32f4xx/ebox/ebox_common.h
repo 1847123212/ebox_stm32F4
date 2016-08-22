@@ -51,14 +51,14 @@ void        ADC1_init(void);
 uint16_t	analog_read(Gpio *pin);
 uint16_t	analog_read_voltage(Gpio *pin);
 
-void        shift_out(Gpio *data_pin, Gpio *clock_pin, uint8_t bit_order, uint8_t val);
-uint8_t		shift_in(Gpio *data_pin, Gpio *clock_pin, uint8_t bit_order);
 
 void        random_seed(uint16_t seed);
 uint16_t    random();
 uint16_t    random(uint16_t max);
 uint16_t    random(uint16_t min, uint16_t max);
 
+void        shift_out(Gpio *data_pin, Gpio *clock_pin, uint8_t bit_order, uint8_t val);
+uint8_t     shift_in(Gpio *data_pin, Gpio *clock_pin, uint8_t bit_order);
 
 
 #endif

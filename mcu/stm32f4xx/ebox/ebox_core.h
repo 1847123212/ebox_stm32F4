@@ -30,9 +30,19 @@ typedef struct
     uint32_t hclk;
     uint32_t pclk2;
     uint32_t pclk1;
-    
-}system_clock_t;    
-    
+}cpu_clock_t;  
+
+typedef struct
+{
+	uint32_t    ability;//cpu calculate plus per second;
+	cpu_clock_t	clock;
+	uint32_t    chip_id[3];
+    uint16_t    flash_size;
+    char        company[8];
+}cpu_t;
+extern cpu_t cpu;
+
+
     void ebox_init(void);
     uint64_t micros(void);
     uint64_t millis( void );

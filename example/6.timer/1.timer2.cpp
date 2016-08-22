@@ -13,7 +13,7 @@
 
 
 #include "ebox.h"
-
+#include "bsp.h"
 
 
 
@@ -28,19 +28,22 @@ void t2it()
     {
         flag = 1;
         xx = 0;
-        PB8.write(!PB8.read());
+        led1.toggle();
     }
 }
 void setup()
 {
     ebox_init();
-    uart1.begin(9600);
-    PB8.mode(OUTPUT_PP);
+    uart1.begin(115200);
 
+    led1.begin();
     timer2.begin(1000);
     timer2.attach_interrupt(t2it);
     timer2.interrupt(ENABLE);
     timer2.start();
+    uart1.printf("\r\ntimer clock       = %dMhz", timer2.get_timer_source_clock()/1000000);
+    uart1.printf("\r\nmax interrupt frq = %dKhz", timer2.get_max_frq()/1000);
+
 }
 
 

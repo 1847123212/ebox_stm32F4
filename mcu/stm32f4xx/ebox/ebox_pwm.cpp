@@ -1,143 +1,170 @@
-/*
-file   : pwm.cpp
-author : shentq
-version: V1.1
-date   : 2015/7/5
+/**
+  ******************************************************************************
+  * @file    pwm.cpp
+  * @author  shentq
+  * @version V1.2
+  * @date    2016/08/14
+  * @brief   
+  ******************************************************************************
+  * @attention
+  *
+  * No part of this software may be used for any commercial activities by any form 
+  * or means, without the prior written consent of shentq. This specification is 
+  * preliminary and is subject to change at any time without notice. shentq assumes
+  * no responsibility for any errors contained herein.
+  * <h2><center>&copy; Copyright 2015 shentq. All Rights Reserved.</center></h2>
+  ******************************************************************************
+  */
 
-Copyright 2015 shentq. All Rights Reserved.
 
-Copyright Notice
-No part of this software may be used for any commercial activities by any form or means, without the prior written consent of shentq.
-
-Disclaimer
-This specification is preliminary and is subject to change at any time without notice. shentq assumes no responsibility for any errors contained herein.
-*/
+/* Includes ------------------------------------------------------------------*/
 #include "ebox_pwm.h"
-
-
-
 
 #define TIMxCH1 0x01
 #define TIMxCH2 0x02
 #define TIMxCH3 0x03
 #define TIMxCH4 0x04
 
-
-
-PWM::PWM(Gpio *pwm_pin)
+PWM::PWM(Gpio *pwm_pin,TIM_TypeDef *timer,uint8_t ch)
 {
-    //	if(isPwmPin(PWMpin))
-    //	{
     this->pwm_pin = pwm_pin;
-    //	}
+	this->TIMx = timer;
+	this->ch = ch;
+	switch((uint32_t)timer)
+	{
+		case TIM1_BASE:
+			rcc_timer_clock_cmd = RCC_APB2PeriphClockCmd;
+			rcc = RCC_APB2Periph_TIM1;
+			af_timer_x = GPIO_AF_TIM1;
+			break;
+		case TIM2_BASE:
+			rcc_timer_clock_cmd = RCC_APB1PeriphClockCmd;
+			rcc = RCC_APB1Periph_TIM2;
+			af_timer_x = GPIO_AF_TIM2;
+			break;
+		case TIM3_BASE:
+			rcc_timer_clock_cmd = RCC_APB1PeriphClockCmd;
+			rcc = RCC_APB1Periph_TIM3;
+			af_timer_x = GPIO_AF_TIM3;
+			break;
+		case TIM4_BASE:
+			rcc_timer_clock_cmd = RCC_APB1PeriphClockCmd;
+			rcc = RCC_APB1Periph_TIM4;
+			af_timer_x = GPIO_AF_TIM4;
+			break;
+		case TIM5_BASE:
+			rcc_timer_clock_cmd = RCC_APB1PeriphClockCmd;
+			rcc = RCC_APB1Periph_TIM5;
+			af_timer_x = GPIO_AF_TIM5;
+			break;
+		case TIM8_BASE:
+			rcc_timer_clock_cmd = RCC_APB1PeriphClockCmd;
+			rcc = RCC_APB2Periph_TIM8;
+			af_timer_x = GPIO_AF_TIM8;
+			break;
+		case TIM9_BASE:
+			rcc_timer_clock_cmd = RCC_APB1PeriphClockCmd;
+			rcc = RCC_APB2Periph_TIM9;
+			af_timer_x = GPIO_AF_TIM9;
+			break;
+		case TIM10_BASE:
+			rcc_timer_clock_cmd = RCC_APB1PeriphClockCmd;
+			rcc = RCC_APB2Periph_TIM10;
+			af_timer_x = GPIO_AF_TIM10;
+			break;
+		case TIM11_BASE:
+			rcc_timer_clock_cmd = RCC_APB1PeriphClockCmd;
+			rcc = RCC_APB2Periph_TIM11;
+			af_timer_x = GPIO_AF_TIM11;
+			break;
+		default :
+			break;	
+	}
+
 }
+
 void PWM::begin(uint32_t frq, uint16_t duty)
 {
     this->duty = duty;
+    //init_info(pwm_pin);
+    pwm_pin->mode(AF_PP,af_timer_x);
 
-    init_info(pwm_pin);
-    pwm_pin->mode(AF_PP);
 
+    rcc_timer_clock_cmd(rcc,ENABLE);
     set_oc_polarity(1);
     set_frq(frq);
-    set_duty(duty);
+    _set_duty(duty);
 }
-void PWM::base_init(uint16_t period, uint16_t prescaler)
+
+void PWM::set_frq(uint32_t frq)
 {
-    this->period = period;//更新period
-
-
-    TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
-
-    RCC_APB1PeriphClockCmd(rcc, ENABLE);
-    TIM_TimeBaseStructure.TIM_Period = this->period - 1; //ARR
-    TIM_TimeBaseStructure.TIM_Prescaler = prescaler - 1;
-    TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up; //
-    TIM_TimeBaseInit(TIMx, &TIM_TimeBaseStructure);
-
-    TIM_ARRPreloadConfig(TIMx, ENABLE);
-
-    TIM_Cmd(TIMx, ENABLE); //
-
-}
-void PWM::init_info(Gpio *pwm_pin)
-{
-    if(pwm_pin->port == GPIOA)
+    uint32_t period  = 0;
+    uint32_t prescaler = 1;
+    
+    if(frq >= get_max_frq())//控制频率，保证其有1%精度
+        frq = get_max_frq();
+    
+    //千分之一精度分配方案
+    for(; prescaler <= 0xffff; prescaler++)
     {
-        switch(pwm_pin->pin)
+        period = get_timer_source_clock() / prescaler / frq;
+        if((0xffff >= period) && (period >= 1000))
         {
-        case GPIO_Pin_0:
-            TIMx = TIM2;
-            rcc = RCC_APB1Periph_TIM2;
-            ch = TIMxCH1;//irq = TIM2_IRQn;
-            break;
-        case GPIO_Pin_1:
-            TIMx = TIM2;
-            rcc = RCC_APB1Periph_TIM2;
-            ch = TIMxCH2;//irq = TIM2_IRQn;
-            break;
-        case GPIO_Pin_2:
-            TIMx = TIM2;
-            rcc = RCC_APB1Periph_TIM2;
-            ch = TIMxCH3;//irq = TIM2_IRQn;
-            break;
-        case GPIO_Pin_3:
-            TIMx = TIM2;
-            rcc = RCC_APB1Periph_TIM2;
-            ch = TIMxCH4;//irq = TIM2_IRQn;
-            break;
-
-        case GPIO_Pin_6:
-            TIMx = TIM3;
-            rcc = RCC_APB1Periph_TIM3;
-            ch = TIMxCH1;//irq = TIM3_IRQn;
-            break;
-        case GPIO_Pin_7:
-            TIMx = TIM3;
-            rcc = RCC_APB1Periph_TIM3;
-            ch = TIMxCH2;//irq = TIM3_IRQn;
-            break;
-        case GPIO_Pin_10:
-            TIMx = TIM3;
-            rcc = RCC_APB1Periph_TIM3;
-            ch = TIMxCH3;//irq = TIM3_IRQn;
-            break;
-        case GPIO_Pin_11:
-            TIMx = TIM3;
-            rcc = RCC_APB1Periph_TIM3;
-            ch = TIMxCH4;//irq = TIM3_IRQn;
+            accuracy = 1;
             break;
         }
     }
-    if(pwm_pin->port == GPIOB)
+    
+    if(prescaler == 65536)//上述算法分配失败
     {
-        switch(pwm_pin->pin)
+        //百分之一分配方案
+        for(prescaler = 1; prescaler <= 0xffff; prescaler++)
         {
-        case GPIO_Pin_6:
-            TIMx = TIM4;
-            rcc = RCC_APB1Periph_TIM4;
-            ch = TIMxCH1;//irq = TIM4_IRQn;
+            period = get_timer_source_clock() / prescaler / frq;
+            if((0xffff >= period) && (period >= 100))
+            {
+            accuracy = 2;
             break;
-        case GPIO_Pin_7:
-            TIMx = TIM4;
-            rcc = RCC_APB1Periph_TIM4;
-            ch = TIMxCH2;//irq = TIM4_IRQn;
-            break;
-        case GPIO_Pin_8:
-            TIMx = TIM4;
-            rcc = RCC_APB1Periph_TIM4;
-            ch = TIMxCH3;//irq = TIM4_IRQn;
-            break;
-        case GPIO_Pin_9:
-            TIMx = TIM4;
-            rcc = RCC_APB1Periph_TIM4;
-            ch = TIMxCH4;//irq = TIM4_IRQn;
-            break;
+            }
         }
     }
 
-}
 
+    base_init(period, prescaler);
+    _set_duty(duty);
+
+}
+//duty:0-1000对应0%-100.0%
+void PWM::set_duty(uint16_t duty)
+{
+    this->duty = duty;
+
+    uint16_t pulse = 0;
+    float percent;
+
+    if(this->duty > 1000)
+        this->duty = 1000;
+    percent = this->duty / 1000.0;
+
+    pulse = (uint16_t) (( percent  * period ));
+
+    switch(ch)
+    {
+    case TIMxCH1:
+        TIMx->CCR1 = pulse;
+        break;
+    case TIMxCH2:
+        TIMx->CCR2 = pulse;
+        break;
+    case TIMxCH3:
+        TIMx->CCR3 = pulse;
+        break;
+    case TIMxCH4:
+        TIMx->CCR4 = pulse;
+        break;
+    }
+
+}
 void PWM::set_oc_polarity(uint8_t flag)
 {
 
@@ -145,38 +172,12 @@ void PWM::set_oc_polarity(uint8_t flag)
         this->oc_polarity = TIM_OCPolarity_High;
     else if(flag == 0)
         this->oc_polarity = TIM_OCPolarity_Low;
-    set_duty(duty);
-
-}
-//pwm的频率 = 72M/72/1000;
-//
-void PWM::set_frq(uint32_t frq)
-{
-    uint32_t period  = 0;
-    uint32_t prescaler = 1;
-    if(frq >= 840000)frq = 840000;
-    //千分之一精度分配方案
-    for(; prescaler <= 0xffff; prescaler++)
-    {
-        period = 84000000 / prescaler / frq;
-        if((0xffff >= period) && (period >= 1000))break;
-    }
-    if(prescaler == 65536)//上述算法分配失败
-        //百分之一分配方案
-        for(prescaler = 1; prescaler <= 0xffff; prescaler++)
-        {
-            period = 84000000 / prescaler / frq;
-            if((0xffff >= period) && (period >= 100))break;
-        }
-
-
-    base_init(period, prescaler);
-    set_duty(duty);
+    _set_duty(duty);
 
 }
 
 //duty:0-1000对应0%-100.0%
-void PWM::set_duty(uint16_t duty)
+void PWM::_set_duty(uint16_t duty)
 {
 
     this->duty = duty;
@@ -211,41 +212,69 @@ void PWM::set_duty(uint16_t duty)
         TIM_OC4Init(TIMx, &TIM_OCInitStructure);
         break;
     }
-
-
 }
-//duty:0-1000对应0%-100.0%
-void analog_write(Gpio *pwm_pin, uint16_t duty)
+
+void PWM::base_init(uint16_t period, uint16_t prescaler)
 {
-    //	if(isPwmPin(PWMpin))
-    //	{
-    PWM p(pwm_pin);
-    p.begin(1000, duty);
-    //p.SetFrq(1000,1);
-    //			p.set_duty(duty);
+    this->period = period;//更新period
 
-    //	}
-    //	else
-    //	{
-    //	;
-    //	}
+
+    TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
+
+    RCC_APB1PeriphClockCmd(rcc, ENABLE);
+    TIM_TimeBaseStructure.TIM_Period = this->period - 1; //ARR
+    TIM_TimeBaseStructure.TIM_Prescaler = prescaler - 1;
+    TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up; //
+    TIM_TimeBaseInit(TIMx, &TIM_TimeBaseStructure);
+
+    TIM_ARRPreloadConfig(TIMx, ENABLE);
+
+    TIM_Cmd(TIMx, ENABLE); //
+    TIMx->CR1 |= TIM_CR1_CEN;
+
 }
 
-//////////////////////////////////////////////////////////////
-uint8_t isPwmPin(uint8_t pin)
+uint32_t PWM::get_timer_source_clock()
 {
-
-    return 0;
+    uint32_t temp = 0;
+    uint32_t timer_clock = 0x00;
+    
+    if ((uint32_t)this->TIMx == TIM1_BASE)
+    {
+        timer_clock = cpu.clock.pclk2;
+    }
+    else
+    {
+        temp = RCC->CFGR;
+        if(temp & 0x00000400)//检测PCLK是否进行过分频，如果进行过分频则定时器的频率为PCLK1的两倍
+            timer_clock = cpu.clock.pclk1 * 2;
+        else
+            timer_clock = cpu.clock.pclk1 ;
+    }
+    return timer_clock;
 }
-//uint8_t isPinNeedRemap(uint8_t pin)
-//{
-//	int i;
 
-//	for( i = 0; i<255; i++)
-//	{
-//		if(pinTOTimx[i].pin == pin)
-//
-//			return pinTOTimx[i].needremap;
-//	}
-//		return 0XFF;
-//}
+uint32_t PWM::get_max_frq()
+{
+    return get_timer_source_clock()/100;
+
+}
+
+float PWM::get_accuracy()
+{
+    
+    switch(accuracy)
+    {
+        case 0:
+            return 0;
+        case 1:
+            return 0.001;
+        case 2:
+            return 0.01;
+
+    }
+    return 0.001;
+
+
+}
+
