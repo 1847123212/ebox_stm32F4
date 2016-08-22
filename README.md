@@ -16,6 +16,8 @@
 
 3.timer可用
 
+4.pwm可用
+
 #论坛支持
 www.antsmaker.cn
 
