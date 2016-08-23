@@ -15,19 +15,19 @@ This specification is preliminary and is subject to change at any time without n
 
 #include "ebox_i2c.h"
 
-SOFTI2C::SOFTI2C(Gpio *scl, Gpio *sda)
+SoftI2c::SoftI2c(Gpio *scl, Gpio *sda)
 {
     this->scl_pin = scl;
     this->sda_pin = sda;
 }
-void SOFTI2C::begin(uint32_t speed)
+void SoftI2c::begin(uint32_t speed)
 {
     this->speed = speed;
     config(this->speed);
     sda_pin->mode(OUTPUT_PP_PU);
     scl_pin->mode(OUTPUT_PP_PU);
 }
-int8_t SOFTI2C::config(uint32_t speed)
+int8_t SoftI2c::config(uint32_t speed)
 {
     this->speed = speed;
     switch(this->speed)
@@ -50,11 +50,11 @@ int8_t SOFTI2C::config(uint32_t speed)
     }
     return 0;
 }
-uint32_t SOFTI2C::read_config()
+uint32_t SoftI2c::read_config()
 {
     return this->speed;
 }
-void SOFTI2C::start()
+void SoftI2c::start()
 {
     sda_pin->mode(OUTPUT_PP_PU);
     sda_pin->set();
@@ -66,7 +66,7 @@ void SOFTI2C::start()
 
 }
 
-void SOFTI2C::stop()
+void SoftI2c::stop()
 {
     sda_pin->mode(OUTPUT_PP_PU);
     scl_pin->reset();
@@ -76,7 +76,7 @@ void SOFTI2C::stop()
     delay_us(delay_times);
     sda_pin->set();
 }
-int8_t SOFTI2C::wait_ack()
+int8_t SoftI2c::wait_ack()
 {
     uint8_t cErrTime = 5;
     sda_pin->mode(INPUT_PU);
@@ -99,7 +99,7 @@ int8_t SOFTI2C::wait_ack()
     delay_us(delay_times);
     return 0;
 }
-int8_t SOFTI2C::send_ack()
+int8_t SoftI2c::send_ack()
 {
     sda_pin->mode(OUTPUT_PP_PU);
     sda_pin->reset();
@@ -111,7 +111,7 @@ int8_t SOFTI2C::send_ack()
 
     return 0;
 }
-int8_t SOFTI2C::send_no_ack()
+int8_t SoftI2c::send_no_ack()
 {
     sda_pin->mode(OUTPUT_PP_PU);
     sda_pin->set();
@@ -122,7 +122,7 @@ int8_t SOFTI2C::send_no_ack()
     delay_us(delay_times);
     return 0;
 }
-int8_t SOFTI2C::send_byte(uint8_t byte)
+int8_t SoftI2c::send_byte(uint8_t byte)
 {
     int8_t ret = 0;
 
@@ -142,14 +142,14 @@ int8_t SOFTI2C::send_byte(uint8_t byte)
     ret = wait_ack();
     return ret;
 }
-int8_t	SOFTI2C::send_7bits_address(uint8_t slave_address)
+int8_t	SoftI2c::send_7bits_address(uint8_t slave_address)
 {
     int8_t ret = 0;
     send_byte(slave_address);
     return ret;
 }
 
-uint8_t SOFTI2C::receive_byte(void)
+uint8_t SoftI2c::receive_byte(void)
 {
     uint8_t i = 8;
     uint8_t byte = 0;
@@ -168,7 +168,7 @@ uint8_t SOFTI2C::receive_byte(void)
 
     return byte;
 }
-int8_t SOFTI2C::write_byte(uint8_t slave_address, uint8_t reg_address, uint8_t data)
+int8_t SoftI2c::write_byte(uint8_t slave_address, uint8_t reg_address, uint8_t data)
 {
     int8_t ret = 0;
     start();
@@ -187,7 +187,7 @@ int8_t SOFTI2C::write_byte(uint8_t slave_address, uint8_t reg_address, uint8_t d
     delay_us(10);
     return ret;
 }
-int8_t SOFTI2C::write_byte(uint8_t slave_address, uint8_t reg_address, uint8_t *data, uint16_t num_to_write)
+int8_t SoftI2c::write_byte(uint8_t slave_address, uint8_t reg_address, uint8_t *data, uint16_t num_to_write)
 {
     int8_t ret = 0;
     start();
@@ -210,7 +210,7 @@ int8_t SOFTI2C::write_byte(uint8_t slave_address, uint8_t reg_address, uint8_t *
     delay_us(10);
     return ret;
 }
-int8_t 	SOFTI2C::read_byte(uint8_t slave_address, uint8_t reg_address, uint8_t *data)
+int8_t 	SoftI2c::read_byte(uint8_t slave_address, uint8_t reg_address, uint8_t *data)
 {
 
     int8_t ret = 0;
@@ -234,7 +234,7 @@ int8_t 	SOFTI2C::read_byte(uint8_t slave_address, uint8_t reg_address, uint8_t *
 
     return ret;
 }
-int8_t 	SOFTI2C::read_byte(uint8_t slave_address, uint8_t reg_address, uint8_t *data, uint16_t num_to_read)
+int8_t 	SoftI2c::read_byte(uint8_t slave_address, uint8_t reg_address, uint8_t *data, uint16_t num_to_read)
 {
     int8_t ret = 0;
     int i = 0;
@@ -269,7 +269,7 @@ int8_t 	SOFTI2C::read_byte(uint8_t slave_address, uint8_t reg_address, uint8_t *
 
     return ret;
 }
-int8_t SOFTI2C::wait_dev_busy(uint8_t slave_address)
+int8_t SoftI2c::wait_dev_busy(uint8_t slave_address)
 {
     int8_t ret;
     uint8_t i = 0;
@@ -288,7 +288,7 @@ int8_t SOFTI2C::wait_dev_busy(uint8_t slave_address)
     while(ret != 0); //如果返回值不是0，继续等待
     return 0;
 }
-int8_t SOFTI2C::take_i2c_right(uint32_t speed)
+int8_t SoftI2c::take_i2c_right(uint32_t speed)
 {
 
     while((busy == 1) && (1))
@@ -300,7 +300,7 @@ int8_t SOFTI2C::take_i2c_right(uint32_t speed)
     busy = 1;
     return 0;
 }
-int8_t SOFTI2C::release_i2c_right(void)
+int8_t SoftI2c::release_i2c_right(void)
 {
     busy = 0;
     return 0;

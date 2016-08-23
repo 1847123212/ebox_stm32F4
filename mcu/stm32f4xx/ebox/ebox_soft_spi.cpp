@@ -15,14 +15,14 @@ This specification is preliminary and is subject to change at any time without n
 
 #include "ebox_spi.h"
 
-SOFTSPI::SOFTSPI(Gpio *sck, Gpio *miso, Gpio *mosi)
+SoftSpi::SoftSpi(Gpio *sck, Gpio *miso, Gpio *mosi)
 {
     this->sck_pin =  sck;
     this->miso_pin = miso;
     this->mosi_pin = mosi;
 
 }
-void SOFTSPI::begin(SPI_CONFIG_TYPE *spi_config)
+void SoftSpi::begin(SPI_CONFIG_TYPE *spi_config)
 {
 
     sck_pin->mode(OUTPUT_PP);
@@ -46,7 +46,7 @@ void SOFTSPI::begin(SPI_CONFIG_TYPE *spi_config)
         break;
     }
 }
-void SOFTSPI::config(SPI_CONFIG_TYPE *spi_config)
+void SoftSpi::config(SPI_CONFIG_TYPE *spi_config)
 {
     current_dev_num = spi_config->dev_num;
     mode = spi_config->mode;
@@ -82,12 +82,12 @@ void SOFTSPI::config(SPI_CONFIG_TYPE *spi_config)
         break;
     }
 }
-uint8_t SOFTSPI::read_config(void)
+uint8_t SoftSpi::read_config(void)
 {
     return current_dev_num;
 }
 
-uint8_t SOFTSPI::transfer0(uint8_t data)
+uint8_t SoftSpi::transfer0(uint8_t data)
 {
     uint8_t i;
     uint8_t RcvData = 0 ;
@@ -114,7 +114,7 @@ uint8_t SOFTSPI::transfer0(uint8_t data)
     }
     return RcvData;
 }
-uint8_t SOFTSPI::transfer1(uint8_t data)
+uint8_t SoftSpi::transfer1(uint8_t data)
 {
     uint8_t i;
     uint8_t RcvData = 0 ;
@@ -152,7 +152,7 @@ uint8_t SOFTSPI::transfer1(uint8_t data)
 
     return RcvData;
 }
-uint8_t SOFTSPI::transfer2(uint8_t data)
+uint8_t SoftSpi::transfer2(uint8_t data)
 {
     uint8_t i;
     uint8_t RcvData = 0 ;
@@ -180,7 +180,7 @@ uint8_t SOFTSPI::transfer2(uint8_t data)
 
     return RcvData;
 }
-uint8_t SOFTSPI::transfer3(uint8_t data)
+uint8_t SoftSpi::transfer3(uint8_t data)
 {
     uint8_t i;
     uint8_t RcvData = 0 ;
@@ -218,7 +218,7 @@ uint8_t SOFTSPI::transfer3(uint8_t data)
 
     return RcvData;
 }
-uint8_t SOFTSPI::transfer(uint8_t data)
+uint8_t SoftSpi::transfer(uint8_t data)
 {
     uint8_t RcvData = 0 ;
     switch(mode)
@@ -243,12 +243,12 @@ uint8_t SOFTSPI::transfer(uint8_t data)
 
 }
 
-int8_t  SOFTSPI::write(uint8_t data)
+int8_t  SoftSpi::write(uint8_t data)
 {
     transfer(data);
     return 0;
 }
-int8_t  SOFTSPI::write(uint8_t *data, uint16_t data_length)
+int8_t  SoftSpi::write(uint8_t *data, uint16_t data_length)
 {
     if(data_length == 0)
         return -1;
@@ -259,17 +259,17 @@ int8_t  SOFTSPI::write(uint8_t *data, uint16_t data_length)
     return 0;
 }
 
-uint8_t SOFTSPI::read()
+uint8_t SoftSpi::read()
 {
     return transfer(0xff);
 }
-int8_t  SOFTSPI::read(uint8_t *data)
+int8_t  SoftSpi::read(uint8_t *data)
 {
     *data = transfer(0xff);
     return 0;
 
 }
-int8_t  SOFTSPI::read(uint8_t *rcvdata, uint16_t data_length)
+int8_t  SoftSpi::read(uint8_t *rcvdata, uint16_t data_length)
 {
     if(data_length == 0)
         return -1;
@@ -280,7 +280,7 @@ int8_t  SOFTSPI::read(uint8_t *rcvdata, uint16_t data_length)
     return 0;
 }
 
-int8_t SOFTSPI::take_spi_right(SPI_CONFIG_TYPE *spi_config)
+int8_t SoftSpi::take_spi_right(SPI_CONFIG_TYPE *spi_config)
 {
     while((busy == 1) && (spi_config->dev_num != read_config()))
         delay_ms(1);
@@ -293,7 +293,7 @@ int8_t SOFTSPI::take_spi_right(SPI_CONFIG_TYPE *spi_config)
     busy = 1;
     return 0;
 }
-int8_t SOFTSPI::release_spi_right(void)
+int8_t SoftSpi::release_spi_right(void)
 {
     busy = 0;
     return 0;

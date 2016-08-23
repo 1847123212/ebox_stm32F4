@@ -14,36 +14,54 @@ Disclaimer
 This specification is preliminary and is subject to change at any time without notice. shentq assumes no responsibility for any errors contained herein.
 */
 #include "ebox_spi.h"
+#include "ebox_gpio.h"
+#include "stm32f4xx_spi.h"
 
 
-SPI::SPI(SPI_TypeDef *SPIx, Gpio *sck, Gpio *miso, Gpio *mosi)
+Spi::Spi(SPI_TypeDef *SPIx, Gpio *sck, Gpio *miso, Gpio *mosi)
 {
     busy = 0;
-    spi = SPIx;
-    sck->mode(AF_PP);
-    miso->mode(AF_PP);
-    mosi->mode(AF_PP);
+    spi = SPIx;	
+    this->sck = sck;
+    this->miso = miso;
+    this->mosi = mosi;
+	
+}  
 
-};
-
-void SPI::begin(SPI_CONFIG_TYPE *spi_config)
+void Spi::begin(SPI_CONFIG_TYPE *spi_config)
 {
+//	  sck->mode(AF_PP_PU,GPIO_AF_SPI3);
+//    miso->mode(AF_PP_PU,GPIO_AF_SPI3);
+//    mosi->mode(AF_PP_PU,GPIO_AF_SPI3);
+//	
     if(spi == SPI1)
     {
+        sck->mode(AF_PP_PU,GPIO_AF_SPI1);
+        miso->mode(AF_PP_PU,GPIO_AF_SPI1);
+        mosi->mode(AF_PP_PU,GPIO_AF_SPI1);
+
         RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
     }
     if(spi == SPI2)
     {
+        sck->mode(AF_PP_PU,GPIO_AF_SPI2);
+        miso->mode(AF_PP_PU,GPIO_AF_SPI2);
+        mosi->mode(AF_PP_PU,GPIO_AF_SPI2);
+
         RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI2, ENABLE);
     }
     if(spi == SPI3)
     {
+        sck->mode(AF_PP_PU,GPIO_AF_SPI3);
+        miso->mode(AF_PP_PU,GPIO_AF_SPI3);
+        mosi->mode(AF_PP_PU,GPIO_AF_SPI3);
+
         RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI3, ENABLE);
     }
 
     config(spi_config);
 }
-void SPI::config(SPI_CONFIG_TYPE *spi_config)
+void Spi::config(SPI_CONFIG_TYPE *spi_config)
 {
     SPI_InitTypeDef SPI_InitStructure;
 
@@ -83,16 +101,15 @@ void SPI::config(SPI_CONFIG_TYPE *spi_config)
     SPI_InitStructure.SPI_FirstBit = spi_config->bit_order;
     SPI_Init(spi, &SPI_InitStructure);
     SPI_Cmd(spi, ENABLE);
-
 }
 
-uint8_t SPI::read_config(void)
+uint8_t Spi::read_config(void)
 {
     return current_dev_num;
 }
 
 
-int8_t SPI::write(uint8_t data)
+int8_t Spi::write(uint8_t data)
 {
     __IO uint8_t dummyByte;
     while ((spi->SR & SPI_I2S_FLAG_TXE) == RESET)
@@ -104,7 +121,7 @@ int8_t SPI::write(uint8_t data)
 
     return 0;
 }
-int8_t SPI::write(uint8_t *data, uint16_t data_length)
+int8_t Spi::write(uint8_t *data, uint16_t data_length)
 {
     __IO uint8_t dummyByte;
     if(data_length == 0)
@@ -120,7 +137,7 @@ int8_t SPI::write(uint8_t *data, uint16_t data_length)
     }
     return 0;
 }
-uint8_t SPI::read()
+uint8_t Spi::read()
 {
     while ((spi->SR & SPI_I2S_FLAG_TXE) == RESET)
         ;
@@ -130,7 +147,7 @@ uint8_t SPI::read()
     return(spi->DR);
 
 }
-int8_t SPI::read(uint8_t *recv_data)
+int8_t Spi::read(uint8_t *recv_data)
 {
     while ((spi->SR & SPI_I2S_FLAG_TXE) == RESET)
         ;
@@ -142,7 +159,7 @@ int8_t SPI::read(uint8_t *recv_data)
     return 0;
 }
 
-int8_t SPI::read(uint8_t *recv_data, uint16_t data_length)
+int8_t Spi::read(uint8_t *recv_data, uint16_t data_length)
 {
     if(data_length == 0)
         return -1;
@@ -158,7 +175,7 @@ int8_t SPI::read(uint8_t *recv_data, uint16_t data_length)
     return 0;
 }
 
-int8_t SPI::take_spi_right(SPI_CONFIG_TYPE *spi_config)
+int8_t Spi::take_spi_right(SPI_CONFIG_TYPE *spi_config)
 {
     while((busy == 1) && (spi_config->dev_num != read_config()))
         delay_ms(1);
@@ -171,7 +188,7 @@ int8_t SPI::take_spi_right(SPI_CONFIG_TYPE *spi_config)
     busy = 1;
     return 0;
 }
-int8_t SPI::release_spi_right(void)
+int8_t Spi::release_spi_right(void)
 {
     busy = 0;
     return 0;

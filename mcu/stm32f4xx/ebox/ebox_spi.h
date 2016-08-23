@@ -37,10 +37,10 @@ typedef struct
 		如果不释放总线会导致别的SPI设备一直处于等待的状态
 */
 //默认配置 空，只依靠结构体SPICONFIG来初始化
-class	SPI
+class	Spi
 {
 public:
-    SPI(SPI_TypeDef *SPIx, Gpio *sck, Gpio *miso, Gpio *mosi);
+    Spi(SPI_TypeDef *SPIx, Gpio *sck, Gpio *miso, Gpio *mosi);
 
     void    begin (SPI_CONFIG_TYPE *spi_config);
     void    config(SPI_CONFIG_TYPE *spi_config);
@@ -59,6 +59,11 @@ private:
     uint8_t     current_dev_num;
     SPI_TypeDef *spi;
     uint8_t     busy;
+
+		Gpio *sck;
+		Gpio *miso;
+		Gpio *mosi;
+		
 };
 /*
 	注意：1.该类的SPI_CLOCK_DIV是由delay_us延时函数控制。略有不准，比硬件SPI会慢很多
@@ -66,10 +71,10 @@ private:
 				3.初期调试I2C设备建议使用SPI_CLOCK_DIV256。
 				4.函数接口和硬件SPI完全一样可以互相替换。
 */
-class SOFTSPI
+class SoftSpi
 {
 public:
-    SOFTSPI(Gpio *sck, Gpio *miso, Gpio *mosi);
+    SoftSpi(Gpio *sck, Gpio *miso, Gpio *mosi);
 
     void    begin(SPI_CONFIG_TYPE *spi_config);
     void    config(SPI_CONFIG_TYPE *spi_config);

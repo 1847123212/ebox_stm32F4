@@ -22,11 +22,11 @@ This specification is preliminary and is subject to change at any time without n
 	2.暂时不支持remap，后续很快会完成
 */
 
-class I2C
+class I2c
 {
 
 public:
-    I2C(I2C_TypeDef *I2Cx, Gpio *scl_pin, Gpio *sda_pin);
+    I2c(I2C_TypeDef *I2Cx, Gpio *scl_pin, Gpio *sda_pin);
     void		begin(uint32_t speed);
     void        config(uint32_t speed);
     uint32_t    read_config();
@@ -67,10 +67,10 @@ private:
 				2.speed设置只能为100000，200000,300k,400k。如果不是此值，则会将speed的值直接传递给delay_us.即delay_us(speed);
 				3.初期调试I2C设备建议使用100k。或者大于10的值
 */
-class SOFTI2C
+class SoftI2c
 {
 public:
-    SOFTI2C(Gpio *scl, Gpio *sda);
+    SoftI2c(Gpio *scl, Gpio *sda);
     void 		begin(uint32_t speed);
     int8_t 		config(uint32_t speed);
     uint32_t	read_config();

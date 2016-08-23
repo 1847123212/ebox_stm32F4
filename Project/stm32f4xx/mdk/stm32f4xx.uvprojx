@@ -652,6 +652,26 @@
               <FileType>8</FileType>
               <FilePath>..\..\..\mcu\stm32f4xx\ebox\ebox_pwm.cpp</FilePath>
             </File>
+            <File>
+              <FileName>ebox_spi.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\mcu\stm32f4xx\ebox\ebox_spi.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>ebox_soft_spi.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\mcu\stm32f4xx\ebox\ebox_soft_spi.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>ebox_i2c.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\mcu\stm32f4xx\ebox\ebox_i2c.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>ebox_soft_iic.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\mcu\stm32f4xx\ebox\ebox_soft_iic.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
