@@ -42,10 +42,10 @@
  *      *增加了get_timer_source_clock(),get_max_frq(),get_accuracy()三个函数接口
  */
  
-class PWM
+class Pwm
 {
 public:
-    PWM(Gpio *pwm_pin,TIM_TypeDef *timer,uint8_t ch);
+    Pwm(Gpio *pwm_pin,TIM_TypeDef *timer,uint8_t ch);
     void begin(uint32_t frq, uint16_t duty);
     void set_frq(uint32_t frq);
     void set_duty(uint16_t duty);
@@ -67,7 +67,7 @@ private:
     uint8_t     accuracy;
 
     void init_info(Gpio *pwm_pin);
-    void base_init(uint16_t Period, uint16_t Prescaler);
+    void base_init(uint32_t _period, uint32_t _prescaler);
 //-------------------------------------------------------------
 
     uint8_t             af_timer_x;

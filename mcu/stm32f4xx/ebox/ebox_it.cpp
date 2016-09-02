@@ -1,12 +1,22 @@
 #include "ebox_common.h"
 
-callback_fun_type timx_cb_table[7][5];
+callback_fun_type timx_cb_table[15][5];
 uint16_t t2_overflow_times = 0;
 uint16_t t3_overflow_times = 0;
 uint16_t t4_overflow_times = 0;
 
 
 extern "C" {
+    void TIM1_BRK_TIM9_IRQHandler()
+    {
+        if(TIM_GetITStatus(TIM9 , TIM_IT_Update) == SET)
+        {
+            if(timx_cb_table[8][0] != 0)
+                timx_cb_table[8][0]();
+            TIM_ClearITPendingBit(TIM9 , TIM_FLAG_Update);
+        }
+   
+    }
     void TIM1_UP_TIM10_IRQHandler(void)
     {
 
@@ -16,7 +26,60 @@ extern "C" {
                 timx_cb_table[0][0]();
             TIM_ClearITPendingBit(TIM1 , TIM_FLAG_Update);
         }
+        if(TIM_GetITStatus(TIM10 , TIM_IT_Update) == SET)
+        {
+            if(timx_cb_table[9][0] != 0)
+                timx_cb_table[9][0]();
+            TIM_ClearITPendingBit(TIM10 , TIM_FLAG_Update);
+        }
     }
+    void TIM1_TRG_COM_TIM11_IRQHandler()
+    {
+        if(TIM_GetITStatus(TIM11 , TIM_IT_Update) == SET)
+        {
+            if(timx_cb_table[10][0] != 0)
+                timx_cb_table[10][0]();
+            TIM_ClearITPendingBit(TIM11 , TIM_FLAG_Update);
+        }
+        
+    }
+    void TIM8_BRK_TIM12_IRQHandler()
+    {
+        if(TIM_GetITStatus(TIM12 , TIM_IT_Update) == SET)
+        {
+            if(timx_cb_table[11][0] != 0)
+                timx_cb_table[11][0]();
+            TIM_ClearITPendingBit(TIM12 , TIM_FLAG_Update);
+        }
+   
+    }
+    void TIM8_UP_TIM13_IRQHandler()
+    {
+        if(TIM_GetITStatus(TIM8 , TIM_IT_Update) == SET)
+        {
+            if(timx_cb_table[7][0] != 0)
+                timx_cb_table[7][0]();
+            TIM_ClearITPendingBit(TIM8 , TIM_FLAG_Update);
+        }
+        if(TIM_GetITStatus(TIM13 , TIM_IT_Update) == SET)
+        {
+            if(timx_cb_table[12][0] != 0)
+                timx_cb_table[12][0]();
+            TIM_ClearITPendingBit(TIM13 , TIM_FLAG_Update);
+        }
+    }
+    void TIM8_TRG_COM_TIM14_IRQHandler()
+    {
+        if(TIM_GetITStatus(TIM14 , TIM_IT_Update) == SET)
+        {
+            if(timx_cb_table[13][0] != 0)
+                timx_cb_table[13][0]();
+            TIM_ClearITPendingBit(TIM14 , TIM_FLAG_Update);
+        }
+        
+    }
+    
+    
     void TIM2_IRQHandler(void)
     {
 
@@ -156,7 +219,7 @@ extern "C" {
             TIM_ClearITPendingBit(TIM5 , TIM_FLAG_CC4);
         }
     }
-    void TIM6_IRQHandler(void)
+    void TIM6_DAC_IRQHandler(void)
     {
         if(TIM_GetITStatus(TIM6 , TIM_IT_Update) == SET)
         {
@@ -174,6 +237,8 @@ extern "C" {
             TIM_ClearITPendingBit(TIM7 , TIM_FLAG_Update);
         }
     }
+    
+    
     
     void DMA2_Stream7_IRQHandler(void)
     {

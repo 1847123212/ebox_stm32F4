@@ -70,95 +70,15 @@ extern "C" {
     
     static void get_system_clock(cpu_clock_t *clock)
     {
-        __I uint8_t AHBPrescTable[16] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 6, 7, 8, 9};
-        uint32_t tmp = 0, pllp = 2, pllsource = 0, pllm = 2;
-        #if defined(STM32F446xx)  
-          uint32_t pllr = 2;
-        #endif /* STM32F446xx */
-          /* Get SYSCLK source -------------------------------------------------------*/
-          tmp = RCC->CFGR & RCC_CFGR_SWS;
-
-          switch (tmp)
-          {
-            case 0x00:  /* HSI used as system clock source */
-              clock->core = HSI_VALUE;
-              break;
-            case 0x04:  /* HSE used as system clock source */
-              clock->core = HSE_VALUE;
-              break;
-            case 0x08:  /* PLL P used as system clock source */
-               /* PLL_VCO = (HSE_VALUE or HSI_VALUE / PLL_M) * PLL_N
-                 SYSCLK = PLL_VCO / PLL_P
-                 */    
-              pllsource = (RCC->PLLCFGR & RCC_PLLCFGR_PLLSRC) >> 22;
-              pllm = RCC->PLLCFGR & RCC_PLLCFGR_PLLM;
-              
-        #if defined(STM32F40_41xxx) || defined(STM32F427_437xx) || defined(STM32F429_439xx) || defined(STM32F401xx) || defined(STM32F446xx) || defined(STM32F469_479xx)
-              if (pllsource != 0)
-              {
-                /* HSE used as PLL clock source */
-                clock->pll_vco = (HSE_VALUE / pllm) * ((RCC->PLLCFGR & RCC_PLLCFGR_PLLN) >> 6);
-              }
-              else
-              {
-                /* HSI used as PLL clock source */
-                clock->pll_vco = (HSI_VALUE / pllm) * ((RCC->PLLCFGR & RCC_PLLCFGR_PLLN) >> 6);
-              }
-        #elif defined(STM32F410xx) || defined(STM32F411xE)
-        #if defined(USE_HSE_BYPASS)
-              if (pllsource != 0)
-              {
-                /* HSE used as PLL clock source */
-                clock->pll_vco = (HSE_BYPASS_INPUT_FREQUENCY / pllm) * ((RCC->PLLCFGR & RCC_PLLCFGR_PLLN) >> 6);
-              }  
-        #else  
-              if (pllsource == 0)
-              {
-                /* HSI used as PLL clock source */
-                clock->pll_vco = (HSI_VALUE / pllm) * ((RCC->PLLCFGR & RCC_PLLCFGR_PLLN) >> 6);
-              }  
-        #endif /* USE_HSE_BYPASS */  
-        #endif /* STM32F40_41xxx || STM32F427_437xx || STM32F429_439xx || STM32F401xx || STM32F446xx || STM32F469_479xx */  
-              pllp = (((RCC->PLLCFGR & RCC_PLLCFGR_PLLP) >>16) + 1 ) *2;
-              clock->core = clock->pll_vco/pllp;      
-              break;
-        #if defined(STM32F446xx)      
-              case 0x0C:  /* PLL R used as system clock source */
-               /* PLL_VCO = (HSE_VALUE or HSI_VALUE / PLL_M) * PLL_N
-                 SYSCLK = PLL_VCO / PLL_R
-                 */    
-              pllsource = (RCC->PLLCFGR & RCC_PLLCFGR_PLLSRC) >> 22;
-              pllm = RCC->PLLCFGR & RCC_PLLCFGR_PLLM;
-              if (pllsource != 0)
-              {
-                /* HSE used as PLL clock source */
-                clock->pll_vco = (HSE_VALUE / pllm) * ((RCC->PLLCFGR & RCC_PLLCFGR_PLLN) >> 6);
-              }
-              else
-              {
-                /* HSI used as PLL clock source */
-                clock->pll_vco = (HSI_VALUE / pllm) * ((RCC->PLLCFGR & RCC_PLLCFGR_PLLN) >> 6);      
-              }
-         
-              pllr = (((RCC->PLLCFGR & RCC_PLLCFGR_PLLR) >>28) + 1 ) *2;
-              clock->core = pllvco/pllr;      
-              break;
-        #endif /* STM32F446xx */
-            default:
-              clock->core = HSI_VALUE;
-              break;
-          }
-          /* Compute HCLK frequency --------------------------------------------------*/
-          /* Get HCLK prescaler */
-          tmp = AHBPrescTable[((RCC->CFGR & RCC_CFGR_HPRE) >> 4)];
-          /* HCLK frequency */
-          clock->core >>= tmp;
-
-
-            clock->hclk = clock->core;
-            clock->pclk2 = clock->core/2;
-            clock->pclk1 = clock->core/4;
-          
+        RCC_ClocksTypeDef RCC_ClocksStatus;
+        
+        SystemCoreClockUpdate();                
+        RCC_GetClocksFreq(&RCC_ClocksStatus);
+        
+        clock->core = RCC_ClocksStatus.SYSCLK_Frequency;
+        clock->hclk = RCC_ClocksStatus.HCLK_Frequency;
+        clock->pclk2 = RCC_ClocksStatus.PCLK2_Frequency;
+        clock->pclk1 = RCC_ClocksStatus.PCLK1_Frequency;       
     }
 
 }

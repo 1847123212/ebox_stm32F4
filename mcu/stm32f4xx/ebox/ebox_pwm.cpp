@@ -25,7 +25,7 @@
 #define TIMxCH3 0x03
 #define TIMxCH4 0x04
 
-PWM::PWM(Gpio *pwm_pin,TIM_TypeDef *timer,uint8_t ch)
+Pwm::Pwm(Gpio *pwm_pin,TIM_TypeDef *timer,uint8_t ch)
 {
     this->pwm_pin = pwm_pin;
 	this->TIMx = timer;
@@ -83,7 +83,7 @@ PWM::PWM(Gpio *pwm_pin,TIM_TypeDef *timer,uint8_t ch)
 
 }
 
-void PWM::begin(uint32_t frq, uint16_t duty)
+void Pwm::begin(uint32_t frq, uint16_t duty)
 {
     this->duty = duty;
     //init_info(pwm_pin);
@@ -96,46 +96,47 @@ void PWM::begin(uint32_t frq, uint16_t duty)
     _set_duty(duty);
 }
 
-void PWM::set_frq(uint32_t frq)
+void Pwm::set_frq(uint32_t frq)
 {
-    uint32_t period  = 0;
-    uint32_t prescaler = 1;
+    uint32_t _period  = 0;
+    uint32_t _prescaler = 1;
     
     if(frq >= get_max_frq())//控制频率，保证其有1%精度
         frq = get_max_frq();
     
     //千分之一精度分配方案
-    for(; prescaler <= 0xffff; prescaler++)
+    for(; _prescaler <= 0xffff; _prescaler++)
     {
-        period = get_timer_source_clock() / prescaler / frq;
-        if((0xffff >= period) && (period >= 1000))
+        _period = get_timer_source_clock() / _prescaler / frq;
+        if((0xffff >= _period) && (_period >= 1000))
         {
             accuracy = 1;
             break;
         }
     }
     
-    if(prescaler == 65536)//上述算法分配失败
+    if(_prescaler == 65536)//上述算法分配失败
     {
         //百分之一分配方案
-        for(prescaler = 1; prescaler <= 0xffff; prescaler++)
+        for(_prescaler = 1; _prescaler <= 0xffff; _prescaler++)
         {
-            period = get_timer_source_clock() / prescaler / frq;
-            if((0xffff >= period) && (period >= 100))
+            _period = get_timer_source_clock() / _prescaler / frq;
+            if((0xffff >= _period) && (_period >= 100))
             {
             accuracy = 2;
             break;
             }
         }
     }
+    this->period = _period;
 
 
-    base_init(period, prescaler);
+    base_init(this->period, _prescaler);
     _set_duty(duty);
 
 }
 //duty:0-1000对应0%-100.0%
-void PWM::set_duty(uint16_t duty)
+void Pwm::set_duty(uint16_t duty)
 {
     this->duty = duty;
 
@@ -146,7 +147,7 @@ void PWM::set_duty(uint16_t duty)
         this->duty = 1000;
     percent = this->duty / 1000.0;
 
-    pulse = (uint16_t) (( percent  * period ));
+    pulse = (uint16_t) (( percent  * this->period ));
 
     switch(ch)
     {
@@ -165,7 +166,7 @@ void PWM::set_duty(uint16_t duty)
     }
 
 }
-void PWM::set_oc_polarity(uint8_t flag)
+void Pwm::set_oc_polarity(uint8_t flag)
 {
 
     if(flag == 1)
@@ -177,7 +178,7 @@ void PWM::set_oc_polarity(uint8_t flag)
 }
 
 //duty:0-1000对应0%-100.0%
-void PWM::_set_duty(uint16_t duty)
+void Pwm::_set_duty(uint16_t duty)
 {
 
     this->duty = duty;
@@ -189,7 +190,7 @@ void PWM::_set_duty(uint16_t duty)
         this->duty = 1000;
     percent = this->duty / 1000.0;
 
-    pulse = (uint16_t) (( percent  * period ));
+    pulse = (uint16_t) (( percent  * this->period ));
 
     TIM_OCInitTypeDef  TIM_OCInitStructure;
 
@@ -214,16 +215,16 @@ void PWM::_set_duty(uint16_t duty)
     }
 }
 
-void PWM::base_init(uint16_t period, uint16_t prescaler)
+void Pwm::base_init(uint32_t _period, uint32_t _prescaler)
 {
-    this->period = period;//更新period
+    this->period = _period;//更新period
 
 
     TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
 
     RCC_APB1PeriphClockCmd(rcc, ENABLE);
     TIM_TimeBaseStructure.TIM_Period = this->period - 1; //ARR
-    TIM_TimeBaseStructure.TIM_Prescaler = prescaler - 1;
+    TIM_TimeBaseStructure.TIM_Prescaler = _prescaler - 1;
     TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up; //
     TIM_TimeBaseInit(TIMx, &TIM_TimeBaseStructure);
 
@@ -234,7 +235,7 @@ void PWM::base_init(uint16_t period, uint16_t prescaler)
 
 }
 
-uint32_t PWM::get_timer_source_clock()
+uint32_t Pwm::get_timer_source_clock()
 {
     uint32_t temp = 0;
     uint32_t timer_clock = 0x00;
@@ -245,22 +246,22 @@ uint32_t PWM::get_timer_source_clock()
     }
     else
     {
-        temp = RCC->CFGR;
-        if(temp & 0x00000400)//检测PCLK是否进行过分频，如果进行过分频则定时器的频率为PCLK1的两倍
-            timer_clock = cpu.clock.pclk1 * 2;
-        else
+        temp = RCC->CFGR & (0x7 << 10);
+        if(temp  == 0)//检测PCLK是否进行过分频，如果进行过分频则定时器的频率为PCLK1的两倍
             timer_clock = cpu.clock.pclk1 ;
+        else
+            timer_clock = cpu.clock.pclk1 * 2;
     }
     return timer_clock;
 }
 
-uint32_t PWM::get_max_frq()
+uint32_t Pwm::get_max_frq()
 {
     return get_timer_source_clock()/100;
 
 }
 
-float PWM::get_accuracy()
+float Pwm::get_accuracy()
 {
     
     switch(accuracy)
