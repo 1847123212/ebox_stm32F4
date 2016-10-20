@@ -46,6 +46,8 @@ public:
     void    config(SPI_CONFIG_TYPE *spi_config);
     uint8_t read_config(void);
 
+    uint8_t transfer(uint8_t data);
+
     int8_t  write(uint8_t data);
     int8_t  write(uint8_t *data, uint16_t data_length);
 

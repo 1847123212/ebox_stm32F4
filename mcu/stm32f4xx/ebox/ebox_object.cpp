@@ -144,3 +144,8 @@ Gpio PG13(GPIOG, GPIO_Pin_13);
 Gpio PG14(GPIOG, GPIO_Pin_14);
 Gpio PG15(GPIOG, GPIO_Pin_15);
 
+Spi     spi1(SPI1, &PA5, &PA6, &PA7);
+Spi     spi2(SPI2, &PB13, &PB14, &PB15);
+Spi     spi3(SPI3, &PB3, &PB4, &PB5);
+SoftSpi	sspi1(&PA5, &PA6, &PA7);
+

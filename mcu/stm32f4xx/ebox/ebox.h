@@ -11,11 +11,18 @@
 #include "ebox_pwm.h"
 #include "ebox_iflash.h"
 
+#include "ebox_mem.h"
 
 extern Usart uart1;
 //Usart uart1(USART1,&PB6,&PB7);
 extern Usart uart2;
 extern Usart uart3;
+
+
+extern Spi spi1;
+extern Spi spi2;
+extern SoftSpi sspi1;
+
 
 extern Gpio PA0;
 extern Gpio PA1;

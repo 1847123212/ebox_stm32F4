@@ -44,7 +44,16 @@ This specification is preliminary and is subject to change at any time without n
 #define PI 3.1415926535898
 
 
-
+typedef struct
+{
+	uint8_t year;
+	uint8_t month;
+	uint8_t date;
+	uint8_t hour;
+	uint8_t min;
+	uint8_t sec;
+	uint8_t week;
+}date_time_t;
 
 void        ADC1_init(void);
 
