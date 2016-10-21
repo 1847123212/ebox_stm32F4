@@ -14,7 +14,9 @@ This specification is preliminary and is subject to change at any time without n
 */
 #ifndef __EBOX_CORE_H
 #define __EBOX_CORE_H
+#ifdef __cplusplus
 extern "C" {
+#endif
 #include "stm32f4xx.h"
     
     
@@ -50,5 +52,8 @@ extern cpu_t cpu;
     void delay_us(uint64_t us);
     void set_systick_user_event_per_sec(u16 frq);
     void attach_systick_user_event(void (*callback_fun)(void));
+#ifdef __cplusplus
 }
+#endif
+
 #endif
