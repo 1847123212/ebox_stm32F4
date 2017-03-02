@@ -717,6 +717,11 @@
               <FileType>8</FileType>
               <FilePath>..\..\..\common\util\WString.cpp</FilePath>
             </File>
+            <File>
+              <FileName>list.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\common\util\list.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

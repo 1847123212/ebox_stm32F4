@@ -1,6 +1,13 @@
 #include "ebox_common.h"
 #include "ebox_core.h"
 
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+#define systick_no_interrupt()  SysTick->CTRL &=0xfffffffd
+#define systick_interrupt()     SysTick->CTRL |=0x0002
+
 cpu_t cpu;
 __IO uint64_t millis_seconds;//提供一个mills()等效的全局变量。降低cpu调用开销
  static void get_system_clock(cpu_clock_t *clock);
@@ -52,18 +59,6 @@ void attach_systick_user_event(void (*callback_fun)(void))
 {
     systick_cb_table[0] = callback_fun;
 }
-void SysTick_Handler(void)//systick中断
-{
-    millis_seconds++;
-    if((millis_seconds % _systick_user_event_per_sec) == 0)
-    {
-        if(systick_cb_table[0] != 0)
-        {
-            systick_cb_table[0]();
-        }
-    }
-
-}
 
 
 static void get_system_clock(cpu_clock_t *clock)
@@ -78,4 +73,18 @@ static void get_system_clock(cpu_clock_t *clock)
     clock->pclk2 = RCC_ClocksStatus.PCLK2_Frequency;
     clock->pclk1 = RCC_ClocksStatus.PCLK1_Frequency;       
 }
+void SysTick_Handler(void)//systick中断
+{
+    millis_seconds++;
+    if((millis_seconds % _systick_user_event_per_sec) == 0)
+    {
+        if(systick_cb_table[0] != 0)
+        {
+            systick_cb_table[0]();
+        }
+    }
 
+}
+#ifdef __cplusplus
+}
+#endif
