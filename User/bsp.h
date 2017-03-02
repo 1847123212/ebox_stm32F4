@@ -21,7 +21,11 @@
 #define __BSP_H
 #include "ebox.h"
 #include "led.h"
-extern Led led1;
-extern Led led2;
+#include "button.h"
+
+extern Led led3;
+extern Led led4;
+extern Pwm pwm;
+extern  BUTTON btn;
 
 #endif

@@ -24,11 +24,11 @@ Timer timer2(TIM2);
 void t2it()
 {
     xx++;
-//    if(xx == 1000)
+    if(xx == 1000)
     {
         flag = 1;
         xx = 0;
-        led1.toggle();
+        led3.toggle();
         PA0.toggle();
     }
 }
@@ -37,7 +37,7 @@ void setup()
     ebox_init();
     uart1.begin(115200);
 
-    led1.begin();
+    led3.begin();
     PA0.mode(OUTPUT_PP);
     timer2.begin(1000);
     timer2.attach_interrupt(t2it);

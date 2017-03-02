@@ -20,7 +20,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "bsp.h"
 
-Led led1(&PA15,1);
-Led led2(&PB4,1);
+Led led3(&PA15,1);
+Led led4(&PB4,1);
 
 Pwm pwm(&PB4,TIM3,1);
+BUTTON btn(&PB3, 1);

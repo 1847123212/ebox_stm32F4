@@ -22,18 +22,18 @@
 
 #include "ebox.h"
 #include "math.h"
+#include "BSP.h"
 
-PWM pwm1(&PA0,TIM2,1);
 
 void setup()
 {
     ebox_init();
     uart1.begin(115200);
-    pwm1.begin(10000, 500);
-    pwm1.set_oc_polarity(1);
-    uart1.printf("timer source frq = %dMhz\r\n",pwm1.get_timer_source_clock()/1000000);
-    uart1.printf("max frq 		= %dKhz\r\n",pwm1.get_max_frq()/1000);
-    uart1.printf("get_accuracy  = %f\r\n",pwm1.get_accuracy());
+    pwm.begin(10000, 500);
+    pwm.set_oc_polarity(1);
+    uart1.printf("timer source frq = %dMhz\r\n",pwm.get_timer_source_clock()/1000000);
+    uart1.printf("max frq 		= %dKhz\r\n",pwm.get_max_frq()/1000);
+    uart1.printf("get_accuracy  = %f\r\n",pwm.get_accuracy());
 }
 
 float x;
@@ -49,7 +49,7 @@ int main(void)
         if(x >= PI)x = 0;
         y = 2000 - (sin(x) + 1) * 1000;
 
-        pwm1.set_duty(y);
+        pwm.set_duty(y);
         delay_ms(10);
     }
 
