@@ -148,4 +148,5 @@ Spi     spi1(SPI1, &PA5, &PA6, &PA7);
 Spi     spi2(SPI2, &PB13, &PB14, &PB15);
 Spi     spi3(SPI3, &PB3, &PB4, &PB5);
 SoftSpi	sspi1(&PA5, &PA6, &PA7);
+SoftSpi	sspi2(&PB13, &PB14, &PB15);
 

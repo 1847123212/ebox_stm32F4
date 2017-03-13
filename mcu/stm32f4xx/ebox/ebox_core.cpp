@@ -17,7 +17,7 @@ void ebox_init(void)
     get_system_clock(&cpu.clock);
     SysTick_Config(cpu.clock.core/1000);//  每隔 (nhz/168,000,000)s产生一次中断
     NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
-          ADC1_init();
+    ADC1_init();
 }
 uint64_t micros(void)
 {

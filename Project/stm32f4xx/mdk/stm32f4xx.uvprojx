@@ -10,7 +10,7 @@
       <TargetName>STM32F4</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060183::V5.06 update 2 (build 183)::ARMCC</pCCUsed>
+      <pCCUsed>5060422::V5.06 update 4 (build 422)::ARMCC</pCCUsed>
       <TargetOption>
         <TargetCommonOption>
           <Device>STM32F405RGTx</Device>
@@ -330,11 +330,12 @@
             <vShortWch>1</vShortWch>
             <v6Lto>0</v6Lto>
             <v6WtE>0</v6WtE>
+            <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER,STM32F40XX,HSE_VALUE = 8000000</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\..\mcu\stm32f4xx\Libraries\CMSIS\Device\ST\STM32F4xx\Include;..\..\..\mcu\stm32f4xx\Libraries\STM32F4xx_StdPeriph_Driver\inc;..\..\..\User;..\..\..\Driver;..\..\..\common\fat_fs;..\..\..\mcu\stm32f4xx\ebox;..\..\..\common\edriver;..\..\..\common\edriver\SFUD\sfud\inc;..\..\..\common\util;..\..\..\common\cJSON</IncludePath>
+              <IncludePath>..\..\..\mcu\stm32f4xx\Libraries\CMSIS\Device\ST\STM32F4xx\Include;..\..\..\mcu\stm32f4xx\Libraries\STM32F4xx_StdPeriph_Driver\inc;..\..\..\User;..\..\..\Driver;..\..\..\common\fat_fs;..\..\..\mcu\stm32f4xx\ebox;..\..\..\common\edriver;..\..\..\common\edriver\SFUD\sfud\inc;..\..\..\common\util;..\..\..\common\cJSON;..\..\..\common\gui</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -347,6 +348,7 @@
             <NoWarn>0</NoWarn>
             <uSurpInc>0</uSurpInc>
             <useXO>0</useXO>
+            <uClangAs>0</uClangAs>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define></Define>
@@ -722,6 +724,11 @@
               <FileType>8</FileType>
               <FilePath>..\..\..\common\util\list.cpp</FilePath>
             </File>
+            <File>
+              <FileName>crc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\util\crc.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -761,6 +768,16 @@
               <FileName>led.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\..\..\common\edriver\led.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>ds18b20.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\common\edriver\ds18b20.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>lcd_1.8.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\common\edriver\lcd_1.8.cpp</FilePath>
             </File>
           </Files>
         </Group>
@@ -806,6 +823,46 @@
               <FileName>bsp.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\..\..\User\bsp.cpp</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>GUI</GroupName>
+          <Files>
+            <File>
+              <FileName>gui.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\common\gui\gui.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>lcd_port.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\common\gui\lcd_port.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Font8_ASCII.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\common\gui\Font8_ASCII.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Font16_ASCII.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\common\gui\Font16_ASCII.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Font16_HZ.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\common\gui\Font16_HZ.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Font24_ASCII.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\common\gui\Font24_ASCII.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Font32_ASCII.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\common\gui\Font32_ASCII.cpp</FilePath>
             </File>
           </Files>
         </Group>

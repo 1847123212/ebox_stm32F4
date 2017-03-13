@@ -283,7 +283,7 @@ int8_t  SoftSpi::read(uint8_t *rcvdata, uint16_t data_length)
 int8_t SoftSpi::take_spi_right(SPI_CONFIG_TYPE *spi_config)
 {
     while((busy == 1) && (spi_config->dev_num != read_config()))
-        delay_ms(1);
+        delay_us(1);
     if(spi_config->dev_num == read_config())
     {
         busy = 1;
