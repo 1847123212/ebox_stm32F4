@@ -10,7 +10,7 @@
       <TargetName>STM32F4</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060422::V5.06 update 4 (build 422)::ARMCC</pCCUsed>
+      <pCCUsed>5060183::V5.06 update 2 (build 183)::ARMCC</pCCUsed>
       <TargetOption>
         <TargetCommonOption>
           <Device>STM32F405RGTx</Device>
@@ -330,12 +330,11 @@
             <vShortWch>1</vShortWch>
             <v6Lto>0</v6Lto>
             <v6WtE>0</v6WtE>
-            <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>USE_STDPERIPH_DRIVER,STM32F40XX,HSE_VALUE = 8000000</Define>
+              <Define>USE_STDPERIPH_DRIVER,STM32F40XX,HSE_VALUE = 24000000</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\..\mcu\stm32f4xx\Libraries\CMSIS\Device\ST\STM32F4xx\Include;..\..\..\mcu\stm32f4xx\Libraries\STM32F4xx_StdPeriph_Driver\inc;..\..\..\User;..\..\..\Driver;..\..\..\common\fat_fs;..\..\..\mcu\stm32f4xx\ebox;..\..\..\common\edriver;..\..\..\common\edriver\SFUD\sfud\inc;..\..\..\common\util;..\..\..\common\cJSON;..\..\..\common\gui</IncludePath>
+              <IncludePath>..\..\..\mcu\stm32f4xx\Libraries\CMSIS\Device\ST\STM32F4xx\Include;..\..\..\mcu\stm32f4xx\Libraries\STM32F4xx_StdPeriph_Driver\inc;..\..\..\User;..\..\..\Driver;..\..\..\common\fat_fs;..\..\..\mcu\stm32f4xx\ebox;..\..\..\common\edriver;..\..\..\common\edriver\SFUD\sfud\inc;..\..\..\common\util;..\..\..\common\cJSON;..\..\..\common\gui;..\..\..\common\network</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -348,7 +347,6 @@
             <NoWarn>0</NoWarn>
             <uSurpInc>0</uSurpInc>
             <useXO>0</useXO>
-            <uClangAs>0</uClangAs>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define></Define>
@@ -729,6 +727,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\common\util\crc.c</FilePath>
             </File>
+            <File>
+              <FileName>util.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\common\util\util.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -779,6 +782,41 @@
               <FileType>8</FileType>
               <FilePath>..\..\..\common\edriver\lcd_1.8.cpp</FilePath>
             </File>
+            <File>
+              <FileName>w5500.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\common\edriver\w5500.cpp</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>network</GroupName>
+          <Files>
+            <File>
+              <FileName>dhcp.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\common\network\dhcp.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>dns.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\common\network\dns.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>socket.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\common\network\socket.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>tcp.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\common\network\tcp.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>udp.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\common\network\udp.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -808,21 +846,6 @@
               <FileName>ebox_sfud_port.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\..\..\common\edriver\SFUD\ebox\ebox_sfud_port.cpp</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>User</GroupName>
-          <Files>
-            <File>
-              <FileName>main.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\..\..\User\main.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>bsp.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\..\..\User\bsp.cpp</FilePath>
             </File>
           </Files>
         </Group>
@@ -863,6 +886,21 @@
               <FileName>Font32_ASCII.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\..\..\common\gui\Font32_ASCII.cpp</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>User</GroupName>
+          <Files>
+            <File>
+              <FileName>main.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\User\main.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>bsp.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\User\bsp.cpp</FilePath>
             </File>
           </Files>
         </Group>

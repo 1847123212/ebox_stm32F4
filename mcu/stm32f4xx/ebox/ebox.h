@@ -11,8 +11,15 @@
 #include "ebox_pwm.h"
 #include "ebox_iflash.h"
 
-#include "stdio.h"
 #include "ebox_mem.h"
+////////系统debug支持////////////////////////////////////////////////////////////////
+#define EBOX_DEBUG 1
+#if EBOX_DEBUG
+extern Usart uart1;//根据不同的串口名称此处需要做相应的修改
+#define DBG(...) uart1.printf(__VA_ARGS__)
+#else
+#define  DBG(...)
+#endif
 
 extern Usart uart1;
 //Usart uart1(USART1,&PB6,&PB7);
@@ -23,7 +30,6 @@ extern Usart uart3;
 extern Spi spi1;
 extern Spi spi2;
 extern SoftSpi sspi1;
-extern SoftSpi sspi2;
 
 
 extern Gpio PA0;

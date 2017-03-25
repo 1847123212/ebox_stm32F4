@@ -24,7 +24,7 @@
 
 #ifndef __NETCONFIG_H
 #define __NETCONFIG_H
-#include "stm32f10x.h"
+#include "ebox.h"
 
 class IPCONFIG
 {
