@@ -19,7 +19,6 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "util.h"
-#include "ebox.h"
 
 
 
@@ -122,7 +121,18 @@ char C2D(
 
     return (char)c;
 }
-
+void swap(float *a, float *b) 
+{
+	float temp = *a;
+	*a = *b;
+	*b = temp;
+}
+void swap(int *a, int *b) 
+{
+	int temp = *a;
+	*a = *b;
+	*b = temp;
+}
 uint16_t swaps(uint16_t i16)//交换高低字节
 {
     uint16_t ret = 0;
@@ -141,27 +151,6 @@ uint32_t swapl(uint32_t l32)//交换高低字节
     return ret;
 }
 
-
-void inet_addr_(unsigned char *addr, unsigned char *ip)
-{
-    int i;
-    //	u_long inetaddr = 0;
-    char taddr[30];
-    char *nexttok;
-    char num;
-    strcpy(taddr, (char *)addr);
-
-    nexttok = taddr;
-    for(i = 0; i < 4 ; i++)
-    {
-        nexttok = strtok(nexttok, ".");
-        if(nexttok[0] == '0' && nexttok[1] == 'x') num = ATOI(nexttok + 2, 0x10);
-        else num = ATOI(nexttok, 10);
-
-        ip[i] = num;
-        nexttok = NULL;
-    }
-}
 int find_str(uint8_t *s_str, uint8_t *p_str, uint16_t count, uint16_t &seek)
 {
     uint16_t _count = 1;
@@ -171,7 +160,7 @@ int find_str(uint8_t *s_str, uint8_t *p_str, uint16_t count, uint16_t &seek)
     uint8_t *temp_ptr = NULL;
     uint8_t *temp_char = NULL;
     if(0 == s_str || 0 == p_str)
-        return -2;
+        return 0;
     for(temp_str = s_str; *temp_str != '\0'; temp_str++)	 //依次查找字符串
     {
         temp_char = temp_str; //指向当前字符串
@@ -200,6 +189,9 @@ int find_str(uint8_t *s_str, uint8_t *p_str, uint16_t count, uint16_t &seek)
     }
     return 0;
 }
+
+//查找字符串
+//查找两个字符串中间的字符串，count1,count2分别是两个字符串出现的第几次
 uint16_t get_str(char *source, const char *begin, uint16_t count1, const char *end, uint16_t count2, char *out)
 {
     uint16_t i;
@@ -220,6 +212,8 @@ uint16_t get_str(char *source, const char *begin, uint16_t count1, const char *e
     return length;
 
 }
+//查找字符串
+//查找在第count个begin字符串之后length长的字符串
 uint16_t get_str(char *source, const char *begin, uint16_t count, uint16_t length, char *out)
 {
     uint16_t i = 0;
@@ -234,7 +228,8 @@ uint16_t get_str(char *source, const char *begin, uint16_t count, uint16_t lengt
     }
     return length;
 }
-
+//查找字符串
+//查找从开始到length中间的字符串
 uint16_t get_str(char *source, char *out, uint16_t length)
 {
     uint16_t i = 0;
@@ -244,4 +239,73 @@ uint16_t get_str(char *source, char *out, uint16_t length)
     }
     out[i] = '\0';
     return length;
+}
+//查找字符串
+//查找从开始到第count个end之间的字符串
+uint16_t get_str(char *source, const char *end, uint16_t count, char *out)
+{
+    uint16_t i;
+    uint16_t len;
+    uint16_t index = 0;
+    uint16_t length = 0;
+    len = find_str((uint8_t *)source, (uint8_t *)end, count, index);
+    length = index;
+    if((len != 0) && (len != 0))
+    {
+        for( i = 0; i < length; i++)
+            out[i] = source[i];
+        out[i] = '\0';
+    }
+    return length;
+}
+float max(float *p,uint16_t len)
+{
+    
+return 0;
+}
+
+
+int partion(int arr[], int low, int high) {
+	int i = low-1;
+	int j = low;
+
+	int x = arr[high];
+
+	for (; j<high; j++) {
+		if (arr[j] < x)
+			swap(&arr[++i], &arr[j]);
+
+	}
+	swap(&arr[i+1], &arr[high]);
+
+	return i+1;
+}
+void quick_sort(int arr[], int low, int high) {
+	if (low >= high)
+		return;
+	int mid = partion(arr, low, high);
+	quick_sort(arr, low, mid-1);
+	quick_sort(arr, mid+1, high);
+}
+int partion(float arr[], int low, int high) {
+	int i = low-1;
+	int j = low;
+
+	int x = arr[high];
+
+	for (; j<high; j++) {
+		if (arr[j] < x)
+			swap(&arr[++i], &arr[j]);
+
+	}
+	swap(&arr[i+1], &arr[high]);
+
+	return i+1;
+}
+void quick_sort(float arr[], int low, int high) {
+	if (low >= high)
+		return;
+	int mid = partion(arr, low, high);
+	quick_sort(arr, low, mid-1);
+	quick_sort(arr, mid+1, high);
 }

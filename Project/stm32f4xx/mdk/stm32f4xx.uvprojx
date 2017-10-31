@@ -10,7 +10,6 @@
       <TargetName>STM32F4</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060183::V5.06 update 2 (build 183)::ARMCC</pCCUsed>
       <TargetOption>
         <TargetCommonOption>
           <Device>STM32F405RGTx</Device>
@@ -125,6 +124,47 @@
             <HexOffset>0</HexOffset>
             <Oh166RecLen>16</Oh166RecLen>
           </OPTHX>
+          <Simulator>
+            <UseSimulator>0</UseSimulator>
+            <LoadApplicationAtStartup>1</LoadApplicationAtStartup>
+            <RunToMain>1</RunToMain>
+            <RestoreBreakpoints>1</RestoreBreakpoints>
+            <RestoreWatchpoints>1</RestoreWatchpoints>
+            <RestoreMemoryDisplay>1</RestoreMemoryDisplay>
+            <RestoreFunctions>1</RestoreFunctions>
+            <RestoreToolbox>1</RestoreToolbox>
+            <LimitSpeedToRealTime>0</LimitSpeedToRealTime>
+            <RestoreSysVw>1</RestoreSysVw>
+          </Simulator>
+          <Target>
+            <UseTarget>1</UseTarget>
+            <LoadApplicationAtStartup>1</LoadApplicationAtStartup>
+            <RunToMain>1</RunToMain>
+            <RestoreBreakpoints>1</RestoreBreakpoints>
+            <RestoreWatchpoints>1</RestoreWatchpoints>
+            <RestoreMemoryDisplay>1</RestoreMemoryDisplay>
+            <RestoreFunctions>0</RestoreFunctions>
+            <RestoreToolbox>1</RestoreToolbox>
+            <RestoreTracepoints>1</RestoreTracepoints>
+            <RestoreSysVw>1</RestoreSysVw>
+          </Target>
+          <RunDebugAfterBuild>0</RunDebugAfterBuild>
+          <TargetSelection>6</TargetSelection>
+          <SimDlls>
+            <CpuDll></CpuDll>
+            <CpuDllArguments></CpuDllArguments>
+            <PeripheralDll></PeripheralDll>
+            <PeripheralDllArguments></PeripheralDllArguments>
+            <InitializationFile></InitializationFile>
+          </SimDlls>
+          <TargetDlls>
+            <CpuDll></CpuDll>
+            <CpuDllArguments></CpuDllArguments>
+            <PeripheralDll></PeripheralDll>
+            <PeripheralDllArguments></PeripheralDllArguments>
+            <InitializationFile></InitializationFile>
+            <Driver>Segger\JL2CM3.dll</Driver>
+          </TargetDlls>
         </DebugOption>
         <Utilities>
           <Flash1>
@@ -189,7 +229,6 @@
             <useUlib>0</useUlib>
             <EndSel>0</EndSel>
             <uLtcg>0</uLtcg>
-            <nSecure>0</nSecure>
             <RoSelD>3</RoSelD>
             <RwSelD>3</RwSelD>
             <CodeSel>0</CodeSel>
@@ -326,15 +365,11 @@
             <useXO>0</useXO>
             <v6Lang>0</v6Lang>
             <v6LangP>0</v6LangP>
-            <vShortEn>1</vShortEn>
-            <vShortWch>1</vShortWch>
-            <v6Lto>0</v6Lto>
-            <v6WtE>0</v6WtE>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>USE_STDPERIPH_DRIVER,STM32F40XX,HSE_VALUE = 24000000</Define>
+              <Define></Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\..\mcu\stm32f4xx\Libraries\CMSIS\Device\ST\STM32F4xx\Include;..\..\..\mcu\stm32f4xx\Libraries\STM32F4xx_StdPeriph_Driver\inc;..\..\..\User;..\..\..\Driver;..\..\..\common\fat_fs;..\..\..\mcu\stm32f4xx\ebox;..\..\..\common\edriver;..\..\..\common\edriver\SFUD\sfud\inc;..\..\..\common\util;..\..\..\common\cJSON;..\..\..\common\gui;..\..\..\common\network</IncludePath>
+              <IncludePath>..\..\..\mcu\stm32f4xx\Libraries\CMSIS\Device\ST\STM32F4xx\Include;..\..\..\mcu\stm32f4xx\Libraries\STM32F4xx_StdPeriph_Driver\inc;..\..\..\User;..\..\..\mcu\stm32f4xx\ebox;..\..\..\mcu\stm32f4xx\ebox\core;..\..\..\mcu\stm32f4xx\ebox\Peripherals;..\..\..\common\edriver</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -600,137 +635,162 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>ebox</GroupName>
+          <GroupName>ebox_core</GroupName>
           <Files>
             <File>
-              <FileName>ebox_core.cpp</FileName>
+              <FileName>dtostrf.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\core\dtostrf.c</FilePath>
+            </File>
+            <File>
+              <FileName>itoa.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\core\itoa.c</FilePath>
+            </File>
+            <File>
+              <FileName>big_little.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>..\..\..\mcu\stm32f4xx\ebox\ebox_core.cpp</FilePath>
+              <FilePath>..\..\..\core\big_little.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>list.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\core\list.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>new.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\core\new.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>print.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\core\print.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>ringbuf.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\core\ringbuf.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>util.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\core\util.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>WString.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\core\WString.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>ebox_mem.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\core\mem\ebox_mem.c</FilePath>
+            </File>
+            <File>
+              <FileName>crc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\core\math\crc.c</FilePath>
+            </File>
+            <File>
+              <FileName>LinearRegression.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\core\math\LinearRegression.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>random.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\core\math\random.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>ebox_core_.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\core\ebox_core_.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>ebox_mcu</GroupName>
+          <Files>
+            <File>
+              <FileName>mcu_core.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\mcu\stm32f4xx\ebox\core\mcu_core.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>mcu_mem.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu\stm32f4xx\ebox\core\mcu_mem.c</FilePath>
             </File>
             <File>
               <FileName>ebox_common.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>..\..\..\mcu\stm32f4xx\ebox\ebox_common.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>ebox_gpio.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\..\..\mcu\stm32f4xx\ebox\ebox_gpio.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>ebox_uart.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\..\..\mcu\stm32f4xx\ebox\ebox_uart.cpp</FilePath>
+              <FilePath>..\..\..\mcu\stm32f4xx\ebox\core\ebox_common.cpp</FilePath>
             </File>
             <File>
               <FileName>ebox_adc.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>..\..\..\mcu\stm32f4xx\ebox\ebox_adc.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>ebox_it.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\..\..\mcu\stm32f4xx\ebox\ebox_it.cpp</FilePath>
+              <FilePath>..\..\..\mcu\stm32f4xx\ebox\Peripherals\ebox_adc.cpp</FilePath>
             </File>
             <File>
               <FileName>ebox_dac.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>..\..\..\mcu\stm32f4xx\ebox\ebox_dac.cpp</FilePath>
+              <FilePath>..\..\..\mcu\stm32f4xx\ebox\Peripherals\ebox_dac.cpp</FilePath>
             </File>
             <File>
-              <FileName>ebox_time.cpp</FileName>
+              <FileName>ebox_gpio.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>..\..\..\mcu\stm32f4xx\ebox\ebox_time.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>ebox_pwm.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\..\..\mcu\stm32f4xx\ebox\ebox_pwm.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>ebox_spi.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\..\..\mcu\stm32f4xx\ebox\ebox_spi.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>ebox_soft_spi.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\..\..\mcu\stm32f4xx\ebox\ebox_soft_spi.cpp</FilePath>
+              <FilePath>..\..\..\mcu\stm32f4xx\ebox\Peripherals\ebox_gpio.cpp</FilePath>
             </File>
             <File>
               <FileName>ebox_i2c.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>..\..\..\mcu\stm32f4xx\ebox\ebox_i2c.cpp</FilePath>
+              <FilePath>..\..\..\mcu\stm32f4xx\ebox\Peripherals\ebox_i2c.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>ebox_iflash.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\mcu\stm32f4xx\ebox\Peripherals\ebox_iflash.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>ebox_pwm.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\mcu\stm32f4xx\ebox\Peripherals\ebox_pwm.cpp</FilePath>
             </File>
             <File>
               <FileName>ebox_soft_iic.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>..\..\..\mcu\stm32f4xx\ebox\ebox_soft_iic.cpp</FilePath>
+              <FilePath>..\..\..\mcu\stm32f4xx\ebox\Peripherals\ebox_soft_iic.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>ebox_soft_spi.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\mcu\stm32f4xx\ebox\Peripherals\ebox_soft_spi.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>ebox_spi.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\mcu\stm32f4xx\ebox\Peripherals\ebox_spi.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>ebox_time.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\mcu\stm32f4xx\ebox\Peripherals\ebox_time.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>ebox_uart.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\mcu\stm32f4xx\ebox\Peripherals\ebox_uart.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>ebox_it.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\mcu\stm32f4xx\ebox\core\ebox_it.cpp</FilePath>
             </File>
             <File>
               <FileName>ebox_object.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\..\..\mcu\stm32f4xx\ebox\ebox_object.cpp</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>util</GroupName>
-          <Files>
-            <File>
-              <FileName>heap.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\common\util\heap.c</FilePath>
-            </File>
-            <File>
-              <FileName>ebox_mem.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\common\util\ebox_mem.c</FilePath>
-            </File>
-            <File>
-              <FileName>dtostrf.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\common\util\dtostrf.c</FilePath>
-            </File>
-            <File>
-              <FileName>itoa.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\common\util\itoa.c</FilePath>
-            </File>
-            <File>
-              <FileName>calendar.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\..\..\common\util\calendar.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>color_convert.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\..\..\common\util\color_convert.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>ringbuf.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\..\..\common\util\ringbuf.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>WString.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\..\..\common\util\WString.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>list.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\..\..\common\util\list.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>crc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\common\util\crc.c</FilePath>
-            </File>
-            <File>
-              <FileName>util.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\..\..\common\util\util.cpp</FilePath>
             </File>
           </Files>
         </Group>
@@ -786,106 +846,6 @@
               <FileName>w5500.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\..\..\common\edriver\w5500.cpp</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>network</GroupName>
-          <Files>
-            <File>
-              <FileName>dhcp.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\..\..\common\network\dhcp.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>dns.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\..\..\common\network\dns.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>socket.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\..\..\common\network\socket.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>tcp.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\..\..\common\network\tcp.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>udp.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\..\..\common\network\udp.cpp</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>cJSON</GroupName>
-          <Files>
-            <File>
-              <FileName>cJSON.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\common\cJSON\cJSON.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>sfud</GroupName>
-          <Files>
-            <File>
-              <FileName>sfud.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\common\edriver\SFUD\sfud\src\sfud.c</FilePath>
-            </File>
-            <File>
-              <FileName>sfud_sfdp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\common\edriver\SFUD\sfud\src\sfud_sfdp.c</FilePath>
-            </File>
-            <File>
-              <FileName>ebox_sfud_port.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\..\..\common\edriver\SFUD\ebox\ebox_sfud_port.cpp</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>GUI</GroupName>
-          <Files>
-            <File>
-              <FileName>gui.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\..\..\common\gui\gui.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>lcd_port.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\..\..\common\gui\lcd_port.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Font8_ASCII.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\..\..\common\gui\Font8_ASCII.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Font16_ASCII.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\..\..\common\gui\Font16_ASCII.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Font16_HZ.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\..\..\common\gui\Font16_HZ.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Font24_ASCII.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\..\..\common\gui\Font24_ASCII.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Font32_ASCII.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\..\..\common\gui\Font32_ASCII.cpp</FilePath>
             </File>
           </Files>
         </Group>

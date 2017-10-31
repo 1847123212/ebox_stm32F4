@@ -12,8 +12,8 @@
  * modification history
  *   ...
  ******************************************************************************/
-#ifndef __E_HEAP_H
-#define __E_HEAP_H    
+#ifndef __MCU_MEM_H
+#define __MCU_MEM_H    
 
 #ifdef __cplusplus
 extern "C"{
@@ -21,8 +21,9 @@ extern "C"{
     
 
 /* Includes ------------------------------------------------------------------*/
-#include "ebox_core.h"
+#include "mcu_core.h"
 #include <stdlib.h>
+
 
 /*内存分配配置*/
 #define EN_SRAM_IN                  (1)
@@ -59,11 +60,11 @@ typedef enum
 }MemType_t;
 
 #ifndef OS_ENTER_CRITICAL
-    #define OS_ENTER_CRITICAL()                         //填写操作系统相关代码
+    #define OS_ENTER_CRITICAL()                no_interrupts()         //填写操作系统相关代码
 #endif
 
 #ifndef OS_EXIT_CRITICAL
-    #define OS_EXIT_CRITICAL()                            //填写操作系统相关代码
+    #define OS_EXIT_CRITICAL()                 interrupts()           //填写操作系统相关代码
 #endif
 
 #ifndef cfgUSE_MALLOC_FAILED_HOOK

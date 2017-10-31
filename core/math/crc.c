@@ -126,4 +126,5 @@ uint8_t  crc8 (uint8_t *p,uint16_t n)
   for(i=0;i<n;i++)
   crc8=crc8_tab[crc8^p[i]];		//连续查表计算CRC
   return crc8;
+    
 }
