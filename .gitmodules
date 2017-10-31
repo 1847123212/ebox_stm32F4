@@ -1,3 +1,0 @@
-[submodule "common/util"]
-	path = common/util
-	url = https://github.com/eboxmaker/ebox_util
